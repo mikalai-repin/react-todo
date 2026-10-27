@@ -1,13 +1,18 @@
 import axios from 'axios'
-import type {
-  LoginData,
-  AuthResponse,
-  SignUpData,
-  ApiErrorResponse,
-} from '../types'
+import type { ApiErrorResponse } from '../types'
 
 export const api = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
+})
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+
+  return config
 })
 
 api.interceptors.response.use(
@@ -25,18 +30,3 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-export const auth = async (loginData: LoginData): Promise<AuthResponse> => {
-  const { data } = await api.post<AuthResponse>('/api/auth/login', loginData)
-
-  return data
-}
-
-export const signUp = async (signUpData: SignUpData) => {
-  const { data } = await api.post<AuthResponse>(
-    '/api/auth/register',
-    signUpData
-  )
-
-  return data
-}

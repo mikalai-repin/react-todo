@@ -2,11 +2,10 @@ import Button from '@mui/material/Button'
 import { Alert, Typography } from '@mui/material'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import type { SignUpData } from '../../types'
-import { signUpSchema } from '../../schemas/authSchema'
+import { signUpSchema } from '../../schemas'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSignUp } from '../../api'
-import { FormTextField } from '../../components'
-import AuthCard from '../../components/AuthCard'
+import { FormTextField, AuthCard } from '../../components'
 import { Link } from 'react-router'
 
 const SignUp: React.FC = () => {
