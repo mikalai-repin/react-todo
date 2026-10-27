@@ -1,8 +1,3 @@
-import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
-import IconButton from '@mui/material/IconButton'
-import ListItem from '@mui/material/ListItem'
-import Typography from '@mui/material/Typography'
 import type { Todo } from '../../types'
 import { useState } from 'react'
 import { EditedItem, ViewItem } from './components'

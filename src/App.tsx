@@ -9,7 +9,7 @@ const client = new QueryClient()
 function App() {
   return (
     <QueryClientProvider client={client}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route element={<AuthGuard mode="private" />}>
             <Route path="/" element={<Home />} />
