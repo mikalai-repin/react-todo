@@ -143,6 +143,10 @@ code {
   width: 100%;
 }
 
+.editForm > button {
+  flex-shrink: 0;
+}
+
 .editButton {
   margin-right: 24px;
 }

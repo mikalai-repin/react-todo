@@ -1,0 +1,19 @@
+.item {
+  transition: opacity 0.2s;
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.title {
+  flex-grow: 1;
+}
+
+.item .progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

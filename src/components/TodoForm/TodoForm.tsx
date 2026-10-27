@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { useCreateTodo } from '../../api'
 import type { CreateTodoDto, InsertPosition } from '../../types'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { todoSchema } from '../../schemas'
+import { createTodoSchema } from '../../schemas'
 import { Alert, Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import FormTextField from '../FormTextField'
 
@@ -25,17 +25,14 @@ const TodoForm: React.FC<Props> = ({ position }) => {
       title: '',
       description: '',
     },
-    resolver: yupResolver(todoSchema),
+    resolver: yupResolver(createTodoSchema),
   })
 
   const onSubmit = (data: CreateTodoDto) => {
     if (!isValid) return
 
-    if (!data.description) {
-      delete data.description
-    }
-
-    mutate(data, { onSuccess: () => reset() })
+    const { description, ...rest } = data
+    mutate(description ? data : rest, { onSuccess: () => reset() })
   }
 
   return (
@@ -56,6 +53,7 @@ const TodoForm: React.FC<Props> = ({ position }) => {
           variant="contained"
           className="addButton"
           disabled={isPending || !isValid}
+          loading={isPending}
         >
           Добавить
         </Button>

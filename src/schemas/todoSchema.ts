@@ -1,7 +1,12 @@
 import * as yup from 'yup'
-import type { CreateTodoDto } from '../types'
+import type { CreateTodoDto, UpdateTodoDto } from '../types'
 
-export const todoSchema: yup.ObjectSchema<CreateTodoDto> = yup.object({
+export const createTodoSchema: yup.ObjectSchema<CreateTodoDto> = yup.object({
   title: yup.string().trim().required().max(200),
   description: yup.string().optional().trim(),
 })
+
+export const updateTodoSchema: yup.ObjectSchema<UpdateTodoDto> =
+  createTodoSchema.shape({
+    completed: yup.boolean(),
+  })
