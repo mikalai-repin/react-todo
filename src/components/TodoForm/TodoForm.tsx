@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useCreateTodo } from '../../api'
-import type { CreateTodoDto } from '../../types'
+import type { CreateTodoDto, InsertPosition } from '../../types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { todoSchema } from '../../schemas'
 import { Alert, Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
@@ -13,7 +13,12 @@ type Props = {
 const TodoForm: React.FC<Props> = ({ position }) => {
   const { mutate, isPending, error, isError } = useCreateTodo()
 
-  const { control, handleSubmit } = useForm<CreateTodoDto>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<CreateTodoDto>({
     mode: 'onChange',
     delayError: 500,
     defaultValues: {
@@ -24,11 +29,13 @@ const TodoForm: React.FC<Props> = ({ position }) => {
   })
 
   const onSubmit = (data: CreateTodoDto) => {
+    if (!isValid) return
+
     if (!data.description) {
       delete data.description
     }
 
-    mutate(data)
+    mutate(data, { onSuccess: () => reset() })
   }
 
   return (
@@ -42,12 +49,13 @@ const TodoForm: React.FC<Props> = ({ position }) => {
           placeholder="Что нужно сделать?"
           size="small"
           fullWidth
+          showFieldError={false}
         />
         <Button
           type="submit"
           variant="contained"
           className="addButton"
-          disabled={isPending}
+          disabled={isPending || !isValid}
         >
           Добавить
         </Button>

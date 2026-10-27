@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
-import type { TodoFilter } from '../../../types'
+import type { TodoFilter } from '../../types'
 
 type Props = {
   activeCount: number

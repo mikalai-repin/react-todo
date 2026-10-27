@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import ListItem from '@mui/material/ListItem'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import type { Todo } from '../../../types'
+import type { Todo } from '../../types'
 
 type Props = {
   todo: Todo

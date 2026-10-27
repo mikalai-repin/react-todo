@@ -1,12 +1,8 @@
-import List from '@mui/material/List'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import { TodoFooter, TodoItem } from './components'
 import styles from './Home.module.css'
 import { useTodosList } from '../../api'
-import { TodoForm } from '../../components'
-
-const editingId = 3
+import { TodoForm, TodoList, TodoFooter } from '../../components'
 
 const Home: React.FC = () => {
   const { data } = useTodosList()
@@ -19,22 +15,9 @@ const Home: React.FC = () => {
         </Typography>
 
         <TodoForm position="top" />
+        <TodoList todos={data?.data ?? []} />
 
-        {data && data.data?.length > 0 ? (
-          <List disablePadding>
-            {data.data.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                isEditing={todo.id === editingId}
-              />
-            ))}
-          </List>
-        ) : (
-          <Typography className={styles.empty}>Задач пока нет</Typography>
-        )}
-
-        {/* <TodoFooter activeCount={activeCount} filter="all" /> */}
+        <TodoFooter activeCount={10} filter="all" />
       </Paper>
     </div>
   )

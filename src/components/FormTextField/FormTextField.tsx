@@ -9,11 +9,13 @@ import {
 type Props<T extends FieldValues> = {
   control: Control<T>
   name: Path<T>
+  showFieldError?: boolean
 } & Omit<TextFieldProps, 'name'>
 
 const FormTextField = <T extends FieldValues>({
   control,
   name,
+  showFieldError = true,
   ...props
 }: Props<T>) => {
   return (
@@ -24,8 +26,10 @@ const FormTextField = <T extends FieldValues>({
         <TextField
           {...field}
           {...props}
-          error={!!fieldState.error}
-          helperText={fieldState.error?.message}
+          {...(showFieldError && {
+            error: !!fieldState.error,
+            helperText: fieldState.error?.message,
+          })}
         />
       )}
     />
