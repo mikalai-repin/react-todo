@@ -4,7 +4,9 @@ import './App.css'
 import { Home, Login, SignUp } from './pages'
 import { AuthGuard } from './components'
 
-const client = new QueryClient()
+const client = new QueryClient({
+  defaultOptions: { queries: { retry: 1 } },
+})
 
 function App() {
   return (

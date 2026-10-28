@@ -24,8 +24,6 @@ const TodoForm: React.FC = () => {
   })
 
   const onSubmit = (data: CreateTodoDto) => {
-    if (!isValid) return
-
     mutate(data, { onSuccess: () => reset() })
   }
 

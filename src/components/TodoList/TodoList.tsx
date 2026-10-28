@@ -11,8 +11,8 @@ import styles from './TodoList.module.css'
 
 type Props = {
   todos: Todo[]
-  isLoading: boolean
-  isPlaceholderData: boolean
+  isLoading?: boolean
+  isPlaceholderData?: boolean
 }
 
 const TodoList: React.FC<Props> = ({

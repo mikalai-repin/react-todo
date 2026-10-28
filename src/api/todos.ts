@@ -13,6 +13,8 @@ import type {
   UpdateTodoDto,
 } from '../types'
 
+const TODOS_QUERY_KEY = 'todos'
+
 const getFilterParams = (
   filter: TodoFilter
 ): Partial<Pick<Todo, 'completed'>> => {
@@ -50,7 +52,7 @@ export const deleteTodo = async (id: number) => {
 
 export const useTodosList = (filter: TodoFilter = 'all') => {
   return useQuery({
-    queryKey: ['todos', filter],
+    queryKey: [TODOS_QUERY_KEY, filter],
     queryFn: () => getTodoList(filter),
     placeholderData: keepPreviousData,
   })
@@ -62,7 +64,7 @@ export const useCreateTodo = () => {
   return useMutation({
     mutationFn: createTodo,
     onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: ['todos'] })
+      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
     },
   })
 }
@@ -73,7 +75,7 @@ export const useEditTodo = () => {
   return useMutation({
     mutationFn: editTodo,
     onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: ['todos'] })
+      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
     },
   })
 }
@@ -84,7 +86,17 @@ export const useDeleteTodo = () => {
   return useMutation({
     mutationFn: deleteTodo,
     onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: ['todos'] })
+      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
     },
   })
 }
+
+export const useActiveCount = () =>
+  useQuery({
+    queryKey: [TODOS_QUERY_KEY, 'active-count'],
+    queryFn: () =>
+      api.get<TodoResponse>('/api/todos', {
+        params: { completed: false, limit: 1 },
+      }),
+    select: ({ data }) => data.meta.total,
+  })

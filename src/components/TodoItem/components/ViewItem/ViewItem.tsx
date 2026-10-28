@@ -24,7 +24,7 @@ const ViewItem: React.FC<Props> = ({ todo, clickAction }) => {
 
   const loading = toggle.isPending || deleteTodo.isPending
 
-  const handleToggle = (_: any, completed: boolean) => {
+  const handleToggle = (_: React.ChangeEvent, completed: boolean) => {
     toggle.mutate({ id: todo.id, completed })
   }
 

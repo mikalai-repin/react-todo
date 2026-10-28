@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { updateTodoSchema } from '../../../../schemas'
 import FormTextField from '../../../FormTextField'
 
-type EditItemProps = {
+type Props = {
   todo: Todo
   clickAction: () => void
 }
 
-const EditedItem: React.FC<EditItemProps> = ({ todo, clickAction }) => {
+const EditedItem: React.FC<Props> = ({ todo, clickAction }) => {
   const { mutate, isPending } = useEditTodo()
 
   const {

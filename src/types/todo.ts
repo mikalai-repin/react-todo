@@ -20,8 +20,6 @@ export type TodoResponse = {
 
 export type CreateTodoDto = Pick<Todo, 'title'>
 
-export type UpdateTodoDto = Partial<
-  Pick<Todo, 'description' | 'title' | 'completed'>
->
+export type UpdateTodoDto = Partial<Pick<Todo, 'title' | 'completed'>>
 
 export type TodoFilter = 'all' | 'active' | 'completed'

@@ -1,5 +1,5 @@
 import type { Todo } from '../../types'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { EditedItem, ViewItem } from './components'
 
 type Props = {
@@ -9,15 +9,11 @@ type Props = {
 const TodoItem: React.FC<Props> = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false)
 
-  const handleClick = (value: boolean) => () => {
-    setIsEditing(value)
-  }
-
   if (isEditing) {
-    return <EditedItem todo={todo} clickAction={handleClick(false)} />
+    return <EditedItem todo={todo} clickAction={() => setIsEditing(false)} />
   }
 
-  return <ViewItem todo={todo} clickAction={handleClick(true)} />
+  return <ViewItem todo={todo} clickAction={() => setIsEditing(true)} />
 }
 
-export default TodoItem
+export default memo(TodoItem)

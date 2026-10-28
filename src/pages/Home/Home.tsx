@@ -1,5 +1,5 @@
 import { Typography, Paper, Alert } from '@mui/material'
-import { useTodosList } from '../../api'
+import { useActiveCount, useTodosList } from '../../api'
 import { TodoForm, TodoList, TodoFooter } from '../../components'
 import { useState } from 'react'
 import type { TodoFilter } from '../../types'
@@ -10,7 +10,8 @@ const Home: React.FC = () => {
   const { data, isLoading, isError, error, isPlaceholderData } =
     useTodosList(filter)
 
-  const activeCount = data?.meta?.total ?? 0
+  const { data: activeCount, isLoading: isActiveCountLoading } =
+    useActiveCount()
 
   return (
     <div className={styles.wrapper}>
@@ -28,8 +29,8 @@ const Home: React.FC = () => {
         />
 
         <TodoFooter
-          activeCount={activeCount}
-          isLoading={isLoading}
+          activeCount={activeCount ?? 0}
+          isLoading={isActiveCountLoading}
           filter={filter}
           updateFilter={setFilter}
         />
