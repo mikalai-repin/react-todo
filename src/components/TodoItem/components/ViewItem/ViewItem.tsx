@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from '@mui/material'
 import type { Todo } from '../../../../types'
-import { useDeleteTodo, useEditTodo } from '../../../../api'
+import { useDeleteTodo, useToggleCheckbox } from '../../../../api'
 import { useState } from 'react'
 import ConfirmDialog from '../../../ConfirmDialog'
 import styles from './ViewItem.module.css'
@@ -18,14 +18,14 @@ type Props = {
 }
 
 const ViewItem: React.FC<Props> = ({ todo, clickAction }) => {
-  const toggle = useEditTodo()
+  const toggle = useToggleCheckbox()
   const deleteTodo = useDeleteTodo()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
   const loading = toggle.isPending || deleteTodo.isPending
 
-  const handleToggle = (_: React.ChangeEvent, completed: boolean) => {
-    toggle.mutate({ id: todo.id, completed })
+  const handleToggle = () => {
+    toggle.mutate(todo.id)
   }
 
   const openConfirm = () => {
@@ -51,7 +51,13 @@ const ViewItem: React.FC<Props> = ({ todo, clickAction }) => {
         </IconButton>
       }
     >
-      <Checkbox checked={todo.completed} onChange={handleToggle} edge="start" />
+      <Checkbox
+        checked={todo.completed}
+        disabled={loading}
+        onChange={handleToggle}
+        edge="start"
+      />
+
       <ListItemText
         className={styles.title}
         primary={todo.title}
@@ -61,10 +67,13 @@ const ViewItem: React.FC<Props> = ({ todo, clickAction }) => {
           secondary: { color: 'error' },
         }}
       />
+
       <Button size="small" className="editButton" onClick={clickAction}>
         Изменить
       </Button>
+
       {loading && <LinearProgress className={styles.progress} />}
+
       <ConfirmDialog
         open={isConfirmOpen}
         title="Удалить задачу?"

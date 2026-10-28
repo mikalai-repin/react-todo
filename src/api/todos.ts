@@ -45,6 +45,11 @@ export const editTodo = async ({
   return data
 }
 
+export const toggleCheckbox = async (id: number) => {
+  const { data } = await api.patch<Todo>(`/api/todos/${id}/toggle`)
+  return data
+}
+
 export const deleteTodo = async (id: number) => {
   const { data } = await api.delete<Todo>(`/api/todos/${id}`)
   return data
@@ -58,36 +63,45 @@ export const useTodosList = (filter: TodoFilter = 'all') => {
   })
 }
 
-export const useCreateTodo = () => {
+const useSuccessAction = () => {
   const queryClient = useQueryClient()
+
+  return () => queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
+}
+
+export const useCreateTodo = () => {
+  const onSuccess = useSuccessAction()
 
   return useMutation({
     mutationFn: createTodo,
-    onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
-    },
+    onSuccess,
   })
 }
 
 export const useEditTodo = () => {
-  const queryClient = useQueryClient()
+  const onSuccess = useSuccessAction()
 
   return useMutation({
     mutationFn: editTodo,
-    onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
-    },
+    onSuccess,
+  })
+}
+
+export const useToggleCheckbox = () => {
+  const onSuccess = useSuccessAction()
+
+  return useMutation({
+    mutationFn: toggleCheckbox,
+    onSuccess,
   })
 }
 
 export const useDeleteTodo = () => {
-  const queryClient = useQueryClient()
+  const onSuccess = useSuccessAction()
 
   return useMutation({
     mutationFn: deleteTodo,
-    onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY] })
-    },
+    onSuccess,
   })
 }
 

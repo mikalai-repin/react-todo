@@ -3,7 +3,6 @@ import type { CreateTodoDto, UpdateTodoDto } from '../types'
 
 export const createTodoSchema: yup.ObjectSchema<CreateTodoDto> = yup.object({
   title: yup.string().trim().required().max(200),
-  description: yup.string().optional().trim(),
 })
 
 export const updateTodoSchema: yup.ObjectSchema<UpdateTodoDto> =
