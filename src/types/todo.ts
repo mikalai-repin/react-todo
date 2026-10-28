@@ -26,5 +26,3 @@ export type UpdateTodoDto = Partial<
 >
 
 export type TodoFilter = 'all' | 'active' | 'completed'
-
-export type InsertPosition = 'top' | 'bottom'

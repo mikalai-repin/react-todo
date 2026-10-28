@@ -1,16 +1,12 @@
 import { useForm } from 'react-hook-form'
 import { useCreateTodo } from '../../api'
-import type { CreateTodoDto, InsertPosition } from '../../types'
+import type { CreateTodoDto } from '../../types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createTodoSchema } from '../../schemas'
-import { Alert, Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Alert, Button } from '@mui/material'
 import FormTextField from '../FormTextField'
 
-type Props = {
-  position: InsertPosition
-}
-
-const TodoForm: React.FC<Props> = ({ position }) => {
+const TodoForm: React.FC = () => {
   const { mutate, isPending, error, isError } = useCreateTodo()
 
   const {
@@ -47,6 +43,7 @@ const TodoForm: React.FC<Props> = ({ position }) => {
           size="small"
           fullWidth
           showFieldError={false}
+          disabled={isPending}
         />
         <Button
           type="submit"
@@ -58,11 +55,6 @@ const TodoForm: React.FC<Props> = ({ position }) => {
           Добавить
         </Button>
       </div>
-
-      <ToggleButtonGroup value={position} exclusive size="small">
-        <ToggleButton value="top">Добавлять сверху</ToggleButton>
-        <ToggleButton value="bottom">Добавлять снизу</ToggleButton>
-      </ToggleButtonGroup>
     </form>
   )
 }

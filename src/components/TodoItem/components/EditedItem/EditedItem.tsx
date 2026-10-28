@@ -55,7 +55,7 @@ const EditedItem: React.FC<EditItemProps> = ({ todo, clickAction }) => {
           type="submit"
           variant="contained"
           size="small"
-          disabled={isPending}
+          disabled={isPending || !isDirty}
           loading={isPending}
         >
           Сохранить

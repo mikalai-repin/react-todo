@@ -49,6 +49,7 @@ const SignUp: React.FC = () => {
           variant="contained"
           fullWidth
           disabled={isPending}
+          loading={isPending}
         >
           Sign up
         </Button>

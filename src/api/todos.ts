@@ -1,9 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from './api'
-import type { CreateTodoDto, Todo, TodoResponse, UpdateTodoDto } from '../types'
+import type {
+  CreateTodoDto,
+  Todo,
+  TodoFilter,
+  TodoResponse,
+  UpdateTodoDto,
+} from '../types'
 
-export const getTodoList = async () => {
-  const { data } = await api.get<TodoResponse>('/api/todos')
+const getFilterParams = (
+  filter: TodoFilter
+): Partial<Pick<Todo, 'completed'>> => {
+  if (filter === 'all') return {}
+
+  return { completed: filter === 'completed' }
+}
+
+export const getTodoList = async (filter: TodoFilter = 'all') => {
+  const params = getFilterParams(filter)
+
+  const { data } = await api.get<TodoResponse>('/api/todos', {
+    params: { ...params, limit: 100 },
+  })
   return data
 }
 
@@ -25,10 +43,10 @@ export const deleteTodo = async (id: number) => {
   return data
 }
 
-export const useTodosList = () => {
+export const useTodosList = (filter: TodoFilter = 'all') => {
   return useQuery({
-    queryKey: ['todos'],
-    queryFn: getTodoList,
+    queryKey: ['todos', filter],
+    queryFn: () => getTodoList(filter),
   })
 }
 
