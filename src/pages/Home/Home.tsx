@@ -1,5 +1,5 @@
-import { Typography, Paper, Alert } from '@mui/material'
-import { useActiveCount, useTodosList } from '../../api'
+import { Typography, Paper, Alert, Button } from '@mui/material'
+import { useActiveCount, useLogout, useTodosList } from '../../api'
 import { TodoForm, TodoList, TodoFooter } from '../../components'
 import { useState } from 'react'
 import type { TodoFilter } from '../../types'
@@ -13,12 +13,19 @@ const Home: React.FC = () => {
   const { data: activeCount, isLoading: isActiveCountLoading } =
     useActiveCount()
 
+  const logout = useLogout()
+
   return (
     <div className={styles.wrapper}>
       <Paper className={styles.card}>
-        <Typography variant="h4" component="h1">
-          Задачи
-        </Typography>
+        <div className={styles.header}>
+          <Typography variant="h4" component="h1">
+            Задачи
+          </Typography>
+          <Button size="small" onClick={logout}>
+            Выйти
+          </Button>
+        </div>
 
         <TodoForm />
         {isError && <Alert severity="error">{error.message}</Alert>}

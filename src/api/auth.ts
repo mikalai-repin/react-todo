@@ -38,6 +38,17 @@ export const useLogin = () => {
   })
 }
 
+export const useLogout = () => {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  return () => {
+    localStorage.removeItem('token')
+    navigate('/login', { replace: true })
+    queryClient.removeQueries()
+  }
+}
+
 export const useSignUp = () => {
   const onSuccess = useAuthSuccess()
 
