@@ -29,7 +29,7 @@ const EditedItem: React.FC<EditItemProps> = ({ todo, clickAction }) => {
   })
 
   const onSubmit = (value: UpdateTodoDto) => {
-    if (isDirty) return clickAction()
+    if (!isDirty) return clickAction()
 
     mutate(
       { ...value, id: todo.id },

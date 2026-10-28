@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+  transition: opacity 0.2s;
+}
+
+.stale {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.wrapper .progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

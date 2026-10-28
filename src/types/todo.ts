@@ -18,8 +18,7 @@ export type TodoResponse = {
   meta: TodosMeta
 }
 
-export type CreateTodoDto = Pick<Todo, 'title'> &
-  Partial<Pick<Todo, 'description'>>
+export type CreateTodoDto = Pick<Todo, 'title'>
 
 export type UpdateTodoDto = Partial<
   Pick<Todo, 'description' | 'title' | 'completed'>

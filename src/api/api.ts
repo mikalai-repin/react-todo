@@ -22,10 +22,18 @@ api.interceptors.response.use(
       if (!error.response) {
         return Promise.reject(new Error('Нет соединения с сервером'))
       }
+
+      const isAuthRequest = error.config?.url?.startsWith('/api/auth')
+
+      if (error.response.status === 401 && !isAuthRequest) {
+        localStorage.removeItem('token')
+        window.location.replace(`${import.meta.env.BASE_URL}login`)
+      }
+
       const { message } = error.response.data
       const text = Array.isArray(message) ? message.join(', ') : message
 
-      return Promise.reject(new Error(text || 'Something went wrong'))
+      return Promise.reject(new Error(text || 'Что-то пошло не так'))
     }
     return Promise.reject(error)
   }

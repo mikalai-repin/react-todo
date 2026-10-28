@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { api } from './api'
 import type {
   CreateTodoDto,
@@ -47,6 +52,7 @@ export const useTodosList = (filter: TodoFilter = 'all') => {
   return useQuery({
     queryKey: ['todos', filter],
     queryFn: () => getTodoList(filter),
+    placeholderData: keepPreviousData,
   })
 }
 

@@ -19,7 +19,6 @@ const TodoForm: React.FC = () => {
     delayError: 500,
     defaultValues: {
       title: '',
-      description: '',
     },
     resolver: yupResolver(createTodoSchema),
   })
@@ -27,8 +26,7 @@ const TodoForm: React.FC = () => {
   const onSubmit = (data: CreateTodoDto) => {
     if (!isValid) return
 
-    const { description, ...rest } = data
-    mutate(description ? data : rest, { onSuccess: () => reset() })
+    mutate(data, { onSuccess: () => reset() })
   }
 
   return (

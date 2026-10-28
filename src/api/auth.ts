@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
 import type { AuthResponse, LoginData, SignUpData } from '../types'
 import { api } from './api'
@@ -18,26 +18,31 @@ const signUp = async (signUpData: SignUpData) => {
   return data
 }
 
-export const useLogin = () => {
+const useAuthSuccess = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  return ({ access_token }: AuthResponse) => {
+    localStorage.setItem('token', access_token)
+    queryClient.removeQueries()
+    navigate('/')
+  }
+}
+
+export const useLogin = () => {
+  const onSuccess = useAuthSuccess()
 
   return useMutation({
     mutationFn: auth,
-    onSuccess: ({ access_token }) => {
-      localStorage.setItem('token', access_token)
-      navigate('/')
-    },
+    onSuccess: onSuccess,
   })
 }
 
 export const useSignUp = () => {
-  const navigate = useNavigate()
+  const onSuccess = useAuthSuccess()
 
   return useMutation({
     mutationFn: signUp,
-    onSuccess: ({ access_token }) => {
-      localStorage.setItem('token', access_token)
-      navigate('/')
-    },
+    onSuccess: onSuccess,
   })
 }

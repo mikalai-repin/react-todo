@@ -12,12 +12,12 @@ import { useState } from 'react'
 import ConfirmDialog from '../../../ConfirmDialog'
 import styles from './ViewItem.module.css'
 
-type EditItemProps = {
+type Props = {
   todo: Todo
   clickAction: () => void
 }
 
-const ViewItem: React.FC<EditItemProps> = ({ todo, clickAction }) => {
+const ViewItem: React.FC<Props> = ({ todo, clickAction }) => {
   const toggle = useEditTodo()
   const deleteTodo = useDeleteTodo()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)

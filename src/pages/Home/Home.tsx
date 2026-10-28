@@ -1,22 +1,16 @@
 import { Typography, Paper, Alert } from '@mui/material'
 import { useTodosList } from '../../api'
 import { TodoForm, TodoList, TodoFooter } from '../../components'
-import styles from './Home.module.css'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import type { TodoFilter } from '../../types'
+import styles from './Home.module.css'
 
 const Home: React.FC = () => {
   const [filter, setFilter] = useState<TodoFilter>('all')
-  const { data, isLoading, isError, error } = useTodosList(filter)
+  const { data, isLoading, isError, error, isPlaceholderData } =
+    useTodosList(filter)
 
-  const updateFilter = (value: TodoFilter) => {
-    setFilter(value)
-  }
-
-  const activeCount = useMemo(() => {
-    const todos = data?.data || []
-    return todos.filter((todo) => !todo.completed).length
-  }, [data?.data])
+  const activeCount = data?.meta?.total ?? 0
 
   return (
     <div className={styles.wrapper}>
@@ -27,13 +21,17 @@ const Home: React.FC = () => {
 
         <TodoForm />
         {isError && <Alert severity="error">{error.message}</Alert>}
-        <TodoList todos={data?.data ?? []} isLoading={isLoading} />
+        <TodoList
+          todos={data?.data ?? []}
+          isLoading={isLoading}
+          isPlaceholderData={isPlaceholderData}
+        />
 
         <TodoFooter
           activeCount={activeCount}
           isLoading={isLoading}
           filter={filter}
-          updateFilter={updateFilter}
+          updateFilter={setFilter}
         />
       </Paper>
     </div>
