@@ -1,12 +1,13 @@
 import axios from 'axios'
 import type { ApiErrorResponse } from '../types'
+import { TOKEN_KEY } from '../redux/slices/authSlice'
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem(TOKEN_KEY)
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -26,7 +27,7 @@ api.interceptors.response.use(
       const isAuthRequest = error.config?.url?.startsWith('/api/auth')
 
       if (error.response.status === 401 && !isAuthRequest) {
-        localStorage.removeItem('token')
+        localStorage.removeItem(TOKEN_KEY)
         window.location.replace(`${import.meta.env.BASE_URL}login`)
       }
 
