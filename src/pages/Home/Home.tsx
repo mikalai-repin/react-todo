@@ -1,14 +1,24 @@
 import { Typography, Paper, Alert, Button } from '@mui/material'
 import { useActiveCount, useLogout, useTodosList } from '../../api'
 import { TodoForm, TodoList, TodoFooter } from '../../components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { TodoFilter } from '../../types'
 import styles from './Home.module.css'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { fetchTodos } from '../../redux/services/todos'
 
 const Home: React.FC = () => {
   const [filter, setFilter] = useState<TodoFilter>('all')
-  const { data, isLoading, isError, error, isPlaceholderData } =
-    useTodosList(filter)
+  // const { data, isLoading, isError, error, isPlaceholderData } =
+  //   useTodosList(filter)
+
+  const { todos, loading, error } = useAppSelector((store) => store.todos)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const dispatchPromise = dispatch(fetchTodos(filter))
+    return () => dispatchPromise.abort()
+  }, [filter, dispatch])
 
   const { data: activeCount, isLoading: isActiveCountLoading } =
     useActiveCount()
@@ -28,11 +38,11 @@ const Home: React.FC = () => {
         </div>
 
         <TodoForm />
-        {isError && <Alert severity="error">{error.message}</Alert>}
+        {!!error && <Alert severity="error">{error}</Alert>}
         <TodoList
-          todos={data?.data ?? []}
-          isLoading={isLoading}
-          isPlaceholderData={isPlaceholderData}
+          todos={todos ?? []}
+          isLoading={loading}
+          isPlaceholderData={false}
         />
 
         <TodoFooter
